@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/jqgrid/css/ui.jqgrid.css" />
+<script src="/jqgrid/js/jquery-1.7.2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
+<script src="/jqgrid/js/i18n/grid.locale-kr.js"></script>
+<script src="/jqgrid/js/jquery.jqGrid.min.js"></script>
+</head>
+<body>
+	<h3>JQGRID EXAM</h3>
+	<div class="container"></div>
+
+	<table border="1">
+		<tr>
+			<th>번호 : <input type="number" id="tbNum">
+			</th>
+
+		</tr>
+		<tr>
+			<th>제목 : <input type="text" id="tbTitle"></th>
+		</tr>
+		<tr>
+			<th>내용 : <textarea rows="20" cols="50" id="tbContent"></textarea></th>
+		</tr>
+		<tr>
+			<th>작성자 : <input type="text" id="tbWriter" ></th>
+		</tr>
+		<tr>
+			<th>작성일 : <input type="text" id="tbCredate" readonly></th>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<th>댓글 작성자 : <input type="text" id="tcWriter"></th>
+		</tr>
+		<tr>
+			<th>댓글 내용 : <textarea rows="5" cols="20" id="tcWriter"></textarea></th>
+		</tr>
+	</table>
+
+	<button onclick="doUpdate()">수정하기</button>
+	<button onclick="doDelete()">삭제하기</button>
+	<a href="/index.html"><button>목록가기</button></a>
+	<button onclick="doComment()">댓글작성</button>
+
+
+	<script>
+	
+		$(document).ready(function() {
+			var tbNum = localStorage.getItem('tbNum');
+			$.ajax({
+				url : '/tb/' + tbNum,
+				method : 'GET',
+				success : function(res) {
+					$('#tbNum').val(res.tbNum);
+					$('#tbTitle').val(res.tbTitle);
+					$('#tbContent').val(res.tbContent);
+					$('#tbWriter').val(res.tbWriter);
+					$('#tbCredate').val(res.tbCredate);
+				}
+
+			})
+
+		})
+		
+	
+		
+		function doUpdate(){
+			var data = {
+					tbNum : document.querySelector('#tbNum').value,
+					tbTitle: document.querySelector('#tbTitle').value,
+					tbContent : document.querySelector('#tbContent').value,
+					tbWriter : document.querySelector('#tbWriter').value
+					
+				}
+			$.ajax({
+				url:'/tb/update',
+				method:'POST',
+				data:data,
+				success : function(res){
+					if(res==1){
+						alert('수정 완료');
+						location.href='/index.html';
+					}
+				}
+			})
+		}
+		
+		function doDelete(){
+			var data = {
+					tbNum : document.querySelector('#tbNum').value,
+					tbTitle: document.querySelector('#tbTitle').value,
+					tbContent : document.querySelector('#tbContent').value,
+					tbWriter : document.querySelector('#tbWriter').value
+					
+				}
+			$.ajax({
+				url:'/tb/delete',
+				method:'POST',
+				data:data,
+				success : function(res){
+					if(res==1){
+						alert('삭제완료');
+						location.href='/index.html';
+					}
+				}
+			})
+		}
+		
+		
+	</script>
+</body>
+</html>

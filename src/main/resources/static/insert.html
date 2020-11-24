@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/jqgrid/css/ui.jqgrid.css" />
+<script src="/jqgrid/js/jquery-1.7.2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
+<script src="/jqgrid/js/i18n/grid.locale-kr.js"></script>
+<script src="/jqgrid/js/jquery.jqGrid.min.js"></script>
+</head>
+<body>
+<h3>JQGRID EXAM</h3>
+	<div class="container"></div>
+
+	<table border="1">
+		<tr>
+			<th>번호 : <input type="number" id="tbNum">
+			</th>
+
+		</tr>
+		<tr>
+			<th>제목 : <input type="text" id="tbTitle"></th>
+		</tr>
+		<tr>
+			<th>내용 : <textarea rows="20" cols="50" id="tbContent"></textarea></th>
+		</tr>
+		<tr>
+			<th>작성자 : <input type="text" id="tbWriter" ></th>
+		</tr>
+		<tr>
+			<th>작성일 : <input type="text" id="tbCredate" readonly></th>
+		</tr>
+	</table>
+	
+	<button onclick="doInsert()">글쓰기</button>
+	
+	<script>
+		function doInsert(){
+			var data = {
+					tbTitle: $('#tbTitle').val(),
+					tbContent : document.querySelector('#tbContent').value,
+					tbWriter : document.querySelector('#tbWriter').value
+					
+				}
+			console.log(data)
+			$.ajax({
+				url:'/tb/new',
+				method:'POST',
+				data:data,
+				success:function(res){
+					if(res==1){
+						console.log(res);
+						alert('글쓰기성공');
+						location.href='/index.html';
+					}
+				}
+			})
+		}
+	</script>
+</body>
+</html>

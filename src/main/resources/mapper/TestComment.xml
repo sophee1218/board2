@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.board.mapper.TestCommentMapper">
+
+	<sql id="testBoardCols">
+		tc_num, tb_num, tc_content, tc_writer, tc_writer, tc_parent, tc_depth
+	</sql>
+
+
+	<select id="selectTestBoardList" resultType="tb">
+		select
+		<include refid="testBoardCols" />
+		from test_board
+
+	</select>
+
+
+	<insert id="insertTestBoard" parameterType="tb">
+
+		insert into
+		test_board (tc_num, tc_content, tc_writer)
+		values(seq_tc_num.nextval,#{tbTitle},#{tbContent},#{tbWriter})
+	</insert>
+
+
+	<update id="updateTestBoard" parameterType="tb">
+		update test_board
+		<set>
+			
+			<if test='tbContent != null and tbContent != ""'>
+				tc_content=#{tbContent},
+			</if>
+			<if test='tbWriter != null and tbWriter != ""'>
+				tc_writer=#{tbWriter}
+			</if>
+		</set>
+		where tc_Num=#{tbNum}
+	</update>
+
+	<delete id="deleteTestBoard" parameterType="tb">
+		delete test_board
+		where tc_num = #{tbNum}
+
+	</delete>
+
+	<select id="selectTestBoard" resultType="tb">
+		select
+		<include refid="testBoardCols" />
+		from test_board
+		<where>
+			<if test='tbNum != null and tbNum !=""'>
+				and tc_num = #{tbNum}
+			</if>
+		</where>
+	</select>
+</mapper>
